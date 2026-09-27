@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Still &mdash; turn a photo and a voice recording into a video</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="reel" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="wrap">
+      <span class="mark">STILL</span>
+      <p class="tagline">One photo. One recording. One video, exactly as long as the sound.</p>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <section class="deck" id="setup-deck">
+
+      <div class="slot" id="image-slot">
+        <div class="slot-head">
+          <span class="slot-index">Photo</span>
+          <span class="slot-hint">JPG, PNG, or WebP</span>
+        </div>
+        <label class="drop" for="image-input" id="image-drop">
+          <div class="drop-empty">
+            <span class="drop-icon">&#9633;</span>
+            <span class="drop-text">Choose a photo, or drop it here</span>
+          </div>
+          <img class="drop-preview" id="image-preview" alt="">
+        </label>
+        <input type="file" id="image-input" accept="image/*" hidden>
+      </div>
+
+      <div class="slot" id="audio-slot">
+        <div class="slot-head">
+          <span class="slot-index">Voice</span>
+          <span class="slot-hint">MP3, WAV, M4A, or OGG</span>
+        </div>
+        <label class="drop" for="audio-input" id="audio-drop">
+          <div class="drop-empty">
+            <span class="drop-icon">&#9834;</span>
+            <span class="drop-text">Choose a recording, or drop it here</span>
+          </div>
+          <div class="drop-preview audio-preview" id="audio-preview-wrap">
+            <div class="waveform" id="waveform"></div>
+            <span class="audio-duration" id="audio-duration">00:00</span>
+          </div>
+        </label>
+        <input type="file" id="audio-input" accept="audio/*" hidden>
+        <audio id="audio-player" controls hidden></audio>
+      </div>
+
+    </section>
+
+    <section class="action-row">
+      <button class="build-btn" id="build-btn" disabled>Build the video</button>
+      <p class="status-line" id="status-line">Add a photo and a recording to begin.</p>
+    </section>
+
+    <section class="deck output-deck hidden" id="output-deck">
+      <div class="slot-head">
+        <span class="slot-index">Result</span>
+        <span class="slot-hint" id="output-hint">&nbsp;</span>
+      </div>
+
+      <div class="progress-rail hidden" id="progress-rail">
+        <div class="progress-fill" id="progress-fill"></div>
+        <span class="progress-counter" id="progress-counter">00:00 / 00:00</span>
+      </div>
+
+      <video id="video-output" class="hidden" controls playsinline></video>
+
+      <a class="download-btn hidden" id="download-btn" download="video.webm">Download the video</a>
+    </section>
+
+    <section class="deck intro-deck hidden" id="intro-deck">
+      <div class="slot-head">
+        <span class="slot-index">Optional &middot; Intro</span>
+        <span class="slot-hint">MP4, WebM, MOV, or similar</span>
+      </div>
+      <p class="intro-copy">Add a short intro clip and it'll play before the video above, stitched into one file.</p>
+
+      <label class="drop" for="intro-input" id="intro-drop">
+        <div class="drop-empty">
+          <span class="drop-icon">&#9654;</span>
+          <span class="drop-text">Choose an intro video, or drop it here</span>
+        </div>
+        <div class="drop-preview intro-preview" id="intro-preview-wrap">
+          <video id="intro-video-preview" muted playsinline></video>
+          <span class="audio-duration" id="intro-duration">00:00</span>
+        </div>
+      </label>
+      <input type="file" id="intro-input" accept="video/*" hidden>
+
+      <div class="action-row intro-action-row">
+        <button class="build-btn secondary-btn" id="merge-btn" disabled>Add intro &amp; build final video</button>
+        <p class="status-line" id="merge-status">Choose an intro clip to combine it with the video above.</p>
+      </div>
+
+      <div class="progress-rail hidden" id="merge-progress-rail">
+        <div class="progress-fill" id="merge-progress-fill"></div>
+        <span class="progress-counter" id="merge-progress-counter">Preparing&hellip;</span>
+      </div>
+
+      <video id="final-video-output" class="hidden" controls playsinline></video>
+      <a class="download-btn hidden" id="final-download-btn" download="final-video.mp4">Download final video</a>
+    </section>
+
+  </main>
+
+  <canvas id="render-canvas" width="1280" height="720" hidden></canvas>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>Everything happens in your browser. Nothing is uploaded anywhere.</p>
+    </div>
+  </footer>
+
+<script src="script.js"></script>
+<script type="module" src="intro-merge.js"></script>
+</body>
+</html>
